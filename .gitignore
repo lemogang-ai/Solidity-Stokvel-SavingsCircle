@@ -1,0 +1,11 @@
+
+**/artifacts/
+**/artifacts/**
+
+.deps/
+states/
+
+
+*.dbg.json
+*.tsbuildinfo
+
