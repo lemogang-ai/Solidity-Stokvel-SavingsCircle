@@ -8,6 +8,11 @@ contract savingCircle {
     uint256 public payOutAmount; // total payout per cycle 
     address[] public members; 
 
+    struct contributor{
+        bool isMemberActive;
+        bool didMemberPay;
+    }
+
     constructor(uint256 _maxMembers){
         maxMembers = _maxMembers;
         payOutAmount = Contribution_amount * _maxMembers;
