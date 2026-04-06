@@ -1,4 +1,4 @@
-# 🇿🇦 Solidity Savings Circle (Digital Stokvel)
+# Solidity Savings Circle (Digital Stokvel)
 
 A decentralized, autonomous implementation of the traditional South African **Stokvel**. This smart contract replaces the need for a central treasurer by using a transparent, code-governed rotation system on the Ethereum blockchain.
 
