@@ -13,14 +13,21 @@ contract savingCircle {
         bool didMemberPay;
     }
 
-    mapping(address => contributor) public memberInfo;
+    mapping(address => contributor) public addressToContributor;
 
     constructor(uint256 _maxMembers){
         maxMembers = _maxMembers;
         payOutAmount = Contribution_amount * _maxMembers;
     }
 
+    function joinCircle () public{
+        require(members.length < maxMembers, "Circle is full");
+        require(!addressToContributor[msg.sender].isMemberActive, "Already a member"); // check if member is active
 
+        members.push(msg.sender);
+        addressToContributor[msg.sender].isMemberActive = true;
+    }
 
-
+    
+    
 }   
