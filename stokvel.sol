@@ -13,6 +13,8 @@ contract savingCircle {
         bool didMemberPay;
     }
 
+    mapping(address => contributor) public memberInfo;
+
     constructor(uint256 _maxMembers){
         maxMembers = _maxMembers;
         payOutAmount = Contribution_amount * _maxMembers;
