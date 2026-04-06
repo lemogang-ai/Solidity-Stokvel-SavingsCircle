@@ -38,6 +38,25 @@ contract savingCircle {
 
         bucketAmount += msg.value;
         addressToContributor[msg.sender].didMemberPay = true;
-        
+
+        if (bucketAmount >= payOutAmount){
+            
+            address payReceiver = members[nextReceiverIndex];
+
+            bucketAmount = 0;
+
+            //point to next month
+            nextReceiverIndex++;
+
+            if (nextReceiverIndex == maxMembers){
+                nextReceiverIndex == 0; // loop back to the start of the circle 
+            }
+
+            for (uint256 i = 0; i < members.length; i ++){
+                addressToContributor[members[i]].didMemberPay = false;
+            }
+
+            (bool success, ) = payable (payReceiver).call{value: address(this).balance}("");
+            require(success, "Payout failed");  
     }
 }
