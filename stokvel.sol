@@ -5,7 +5,9 @@ pragma solidity 0.8.18; // this is the solidity version ,
 contract savingCircle {
     uint256 public constant Contribution_amount = 0.001 ether;
     uint256 public maxMembers; // members in the saving circle
-    uint256 public payOutAmount; // total payout per cycle 
+    uint256 public payOutAmount; // total payout per month
+    uint256 public bucketAmount;
+    uint256 public nextReceiverIndex = 0;
     address[] public members; 
 
     struct contributor{
@@ -28,6 +30,14 @@ contract savingCircle {
         addressToContributor[msg.sender].isMemberActive = true;
     }
 
-    
-    
-}   
+    function contribute() public payable {
+        //my security guards
+        require(addressToContributor[msg.sender].isMemberActive, "Join first!");
+        require(msg.value == Contribution_amount, "Contribution amount is 0.001 ETH");
+        require(!addressToContributor[msg.sender].didMemberPay, "Already paid"); // check if member has paid, message);
+
+        bucketAmount += msg.value;
+        addressToContributor[msg.sender].didMemberPay = true;
+        
+    }
+}
