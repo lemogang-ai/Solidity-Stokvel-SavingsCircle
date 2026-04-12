@@ -262,3 +262,34 @@ async function joinCircle() {
 }
 
 joinButton.onclick = joinCircle;
+
+const memberListUI = document.getElementById("memberList");
+const nextReceiverUI = document.getElementById("nextReceiver");
+
+async function updateMemberInfo(){
+	try {
+		memberListUI.innerHTML = "";
+
+		for(let i = 0 ; i< 10; i++){
+			try{
+				const memberAddress = await stokvelContract.members(i);
+				if(memberAddress !== "0x0000000000000000000000000000000000000000") break;
+
+				const listItem = document.createElement("li");
+				listItem.innerText = memberAddress;
+				memberListUI.appendChild(listItem);
+			} catch (error) {
+				break;
+			}
+		}
+			// 3. Get the Next Receiver Index
+        const nextIndex = await stokvelContract.nextReceiverIndex();
+        const nextAddr = await stokvelContract.members(nextIndex);
+        nextReceiverUI.innerText = nextAddr;
+		
+	} catch (error) {
+		console.error("Error fetching member info:", error);
+	}	
+}
+
+document.getElementById("refreshMembers").onclick = updateMemberInfo;
