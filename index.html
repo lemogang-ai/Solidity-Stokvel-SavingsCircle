@@ -16,7 +16,17 @@
     <input type="number" id="depositAmount" placeholder="Amount in ETH">
     <button id="depositButton">Deposit to Pool</button>
 
+    <hr>
+
+    <h3>Group Members</h3>
+    <ul  id="memberList"></ul>
+    <button id="refreshMembers"> Update Member List</button>
     <p>Total Pool Balance: <span id="poolBalance">0</span> ETH</p>
+
+    <hr>
+    <h3> Payout Section</h3>
+    <p>Next in line to receive: <span id="nextReceiver">Loading...</span></p>
+    <button id="payoutButton">Payout to Next Receiver(only next receiver)</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js" type="application/javascript"></script>
     <script src="main.js"></script>
