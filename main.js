@@ -144,27 +144,28 @@ let signer;
 async function init() {
     if (typeof window.ethereum !== "undefined"){
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        
 		stokvelContract = new ethers.Contract(contractAddress, contractABI, provider);
         
+		console.log("contract intializing")
+
 		try{
 		
 			//Call your Solidity function 'bucketAmount'
 			const balance = await stokvelContract.bucketAmount();
-
 			const ethBalance = ethers.utils.formatEther(balance);
-            
-            // Display it on the screen
             document.getElementById("poolBalance").innerText = ethBalance;
             
             console.log("Pool Balance Fetched:", ethBalance);
-		} catch (err){
-		console.error("Error fetching balance;", err);
+		} catch (readError){
+			console.error("Error fetching balance;", readError);
+			if(document.getElementById("poolBalance")){
+			document.getElementById("pool balance").innerT ="Error loading";
+
+			}
 		}
     } else {
         alert("Please install MetaMask to use this Stokvel!");
     }
-    
 }
 
 init();
