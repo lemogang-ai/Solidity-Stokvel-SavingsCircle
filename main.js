@@ -145,7 +145,22 @@ async function init() {
     if (typeof window.ethereum !== "undefined"){
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         
-        console.log("Ethers.js is ready!");
+		stokvelContract = new ethers.Contract(contractAddress, contractABI, provider);
+        
+		try{
+		
+			//Call your Solidity function 'bucketAmount'
+			const balance = await stokvelContract.bucketAmount();
+
+			const ethBalance = ethers.utils.formatEther(balance);
+            
+            // Display it on the screen
+            document.getElementById("poolBalance").innerText = ethBalance;
+            
+            console.log("Pool Balance Fetched:", ethBalance);
+		} catch (err){
+		console.error("Error fetching balance;", err);
+		}
     } else {
         alert("Please install MetaMask to use this Stokvel!");
     }
@@ -153,3 +168,32 @@ async function init() {
 }
 
 init();
+
+const connectButton = document.getElementById("connectButton");
+const walletAddressDisplay = document.getElementById("walletAddress");
+
+async function connectWallet() {
+    try {
+        // 1. Request account access from MetaMask
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        const walletAddress = accounts[0];
+
+        // 2. Set up the Signer
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        signer = provider.getSigner();
+
+        // 3. Re-initialize the contract with the Signer (so we can send transactions)
+        stokvelContract = new ethers.Contract(contractAddress, contractABI, signer);
+
+        // 4. Update the UI
+        walletAddressDisplay.innerText = `Connected: ${walletAddress}`;
+        connectButton.innerText = "Connected ";
+        
+        console.log("Signer ready:", walletAddress);
+    } catch (error) {
+        console.error("User denied account access", error);
+    }
+}
+
+// Attach the function to your button
+connectButton.onclick = connectWallet;
