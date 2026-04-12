@@ -236,3 +236,29 @@ async function contribute() {
 }
 
 depositButton.onclick = contribute;
+
+const joinButton = document.getElementById("joinButton");
+
+async function joinCircle() {
+    try {
+        console.log("Attempting to join the circle...");
+        
+        // Call the joinCircle function from your Solidity ABI
+        const tx = await stokvelContract.joinCircle();
+        
+        joinButton.innerText = "Joining...";
+        console.log("Transaction sent! Hash:", tx.hash);
+
+        await tx.wait(); // Wait for the blockchain to confirm
+
+        joinButton.innerText = "Joined ✅";
+        console.log("You are now a member!");
+        alert("Welcome to the Stokvel! Now you can deposit.");
+        
+    } catch (error) {
+        console.error("Join failed:", error);
+        alert("Failed to join. Check if you are already a member.");
+    }
+}
+
+joinButton.onclick = joinCircle;
