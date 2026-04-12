@@ -198,3 +198,41 @@ async function connectWallet() {
 
 // Attach the function to your button
 connectButton.onclick = connectWallet;
+
+const depositButton = document.getElementById("depositButton");
+const depositAmountInput = document.getElementById("depositAmount");
+
+async function contribute() {
+    try {
+        const amount = depositAmountInput.value;
+        if (!amount) return alert("Please enter an amount!");
+
+        console.log(`Attempting to deposit ${amount} ETH...`);
+
+        // 1. Convert the input amount to "Wei" (the unit the blockchain uses)
+        const amountInWei = ethers.utils.parseEther(amount);
+
+        // 2. Call the 'contribute' function from your Solidity contract
+
+        const tx = await stokvelContract.contribute({ value: amountInWei });
+
+        console.log("Transaction sent! Waiting for confirmation...", tx.hash);
+        depositButton.innerText = "Processing...";
+
+        // 3. Wait for the block to be mined
+        await tx.wait();
+
+        console.log("Transaction confirmed!");
+        depositButton.innerText = "Deposit Successful ";
+        
+        // Refresh the balance on the screen
+        init(); 
+        
+    } catch (error) {
+        console.error("Deposit failed:", error);
+        alert("Transaction failed! Check the console.");
+        depositButton.innerText = "Deposit to Pool";
+    }
+}
+
+depositButton.onclick = contribute;
